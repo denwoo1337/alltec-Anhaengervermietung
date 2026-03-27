@@ -1,25 +1,25 @@
-import { useRef } from 'react';
-import { motion, useInView, type Variants } from 'framer-motion';
-import { ArrowRight } from '@phosphor-icons/react';
+import { useState, useRef } from 'react';
+import { motion, useInView, AnimatePresence, type Variants } from 'framer-motion';
+import { CaretDown, ArrowRight } from '@phosphor-icons/react';
 import autoImg from '../../brand_assets/3000kg_Autoanhänger.jpg';
 import planenImg from '../../brand_assets/750kg_Planenanhänger.jpg';
 import motorradImg from '../../brand_assets/750kg_Motorrad.jpg';
 
 type Spec = { label: string; value: string };
-type Pricing = { label: string; price: string }[];
+type PriceEntry = { label: string; price: string };
 
 type Trailer = {
   id: number;
   name: string;
   model: string;
   tag: string;
+  zulassung: string;
+  keySpec: string;
   img: string;
   imgPosition: string;
-  description: string;
   specs: Spec[];
   highlights: string[];
-  pricing: Pricing;
-  large: boolean;
+  pricing: PriceEntry[];
 };
 
 const trailers: Trailer[] = [
@@ -28,12 +28,14 @@ const trailers: Trailer[] = [
     name: 'Auto-Transportanhänger',
     model: 'Z-Trailer AT30-21/48',
     tag: 'Verfügbar',
+    zulassung: '3.000 kg',
+    keySpec: 'Nutzlast 2.460 kg · Ladelänge 4,80 m',
     img: autoImg,
     imgPosition: 'center 55%',
-    description:
-      'Kippbarer Aluminium-Autotransporter für Fahrzeuge von Kleinwagen bis SUV. Geringes Eigengewicht, maximale Nutzlast.',
     specs: [
+      { label: 'Zulassung', value: '3.000 kg' },
       { label: 'Nutzlast', value: 'ca. 2.460 kg' },
+      { label: 'Eigengewicht', value: 'ca. 540 kg' },
       { label: 'Ladebreite', value: '2,10 m' },
       { label: 'Ladelänge', value: '4,80 m' },
     ],
@@ -43,47 +45,52 @@ const trailers: Trailer[] = [
       { label: 'Weiterer Tag', price: '50 €' },
       { label: 'Wochenende', price: '150 €' },
     ],
-    large: true,
   },
   {
     id: 2,
     name: 'Planenanhänger',
     model: 'Humbaur HA752513',
     tag: 'Verfügbar',
+    zulassung: '750 kg',
+    keySpec: 'Nutzlast 520 kg · Klasse B genügt',
     img: planenImg,
     imgPosition: 'center 70%',
-    description: 'Klasse B genügt. Für Möbel, Kartonagen und Gartenabfälle.',
     specs: [
+      { label: 'Zulassung', value: '750 kg ungebremst' },
       { label: 'Nutzlast', value: 'ca. 520 kg' },
-      { label: 'Innenmaße', value: '251 × 131 × 180 cm' },
+      { label: 'Innenlänge', value: '251 cm' },
+      { label: 'Innenbreite', value: '131 cm' },
+      { label: 'Innenhöhe', value: '180 cm' },
     ],
-    highlights: ['Klasse B genügt', '750 kg ungebremst'],
+    highlights: ['Klasse B genügt', '750 kg ungebremst', 'Hochplane'],
     pricing: [
       { label: 'Tag', price: '30 €' },
       { label: 'Weiterer Tag', price: '20 €' },
       { label: 'Wochenende', price: '70 €' },
     ],
-    large: false,
   },
   {
     id: 3,
     name: 'Motorradanhänger',
     model: 'Humbaur HM752113',
     tag: 'Verfügbar',
+    zulassung: '750 kg',
+    keySpec: 'Nutzlast 500 kg · 3 Stellplätze',
     img: motorradImg,
     imgPosition: 'center 60%',
-    description: '3 Stellplätze mit Zurrpunkten und montierter Ladeschiene.',
     specs: [
+      { label: 'Zulassung', value: '750 kg ungebremst' },
       { label: 'Nutzlast', value: '500 kg' },
+      { label: 'Innenlänge', value: '209 cm' },
+      { label: 'Innenbreite', value: '136 cm' },
       { label: 'Stellplätze', value: '3' },
     ],
-    highlights: ['3 Stellplätze', 'Rampe montiert'],
+    highlights: ['3 Stellplätze', 'Rampe montiert', 'Zurrpunkte', '750 kg ungebremst'],
     pricing: [
       { label: 'Tag', price: '30 €' },
       { label: 'Weiterer Tag', price: '20 €' },
       { label: 'Wochenende', price: '70 €' },
     ],
-    large: false,
   },
 ];
 
