@@ -137,7 +137,7 @@ function TrailerCard({
         <img
           src={trailer.img}
           alt={trailer.name}
-          className="w-full h-full object-cover transition-transform duration-700"
+          className="w-full h-full object-cover"
           style={{ objectPosition: trailer.imgPosition }}
         />
         <div
