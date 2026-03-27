@@ -1,0 +1,138 @@
+import { motion, type Variants } from 'framer-motion';
+import { ArrowDown } from '@phosphor-icons/react';
+
+const containerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.12, delayChildren: 0.3 },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: "easeOut" },
+  },
+};
+
+export default function Hero() {
+  const scrollToContact = () => {
+    document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const scrollDown = () => {
+    document.querySelector('#about')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <section
+      id="hero"
+      className="relative min-h-[100dvh] flex items-center overflow-hidden"
+    >
+      {/* Background image with dark gradient overlay */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('https://picsum.photos/seed/trailer-alltec/1920/1080')`,
+        }}
+      />
+      {/* Left-heavy dark overlay — asymmetric fade */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            'linear-gradient(to right, rgba(17,17,17,0.97) 0%, rgba(17,17,17,0.85) 45%, rgba(17,17,17,0.4) 75%, rgba(17,17,17,0.15) 100%)',
+        }}
+      />
+      {/* Bottom fade */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-32"
+        style={{
+          background: 'linear-gradient(to top, #111111 0%, transparent 100%)',
+        }}
+      />
+
+      {/* Content — left-aligned, asymmetric (taste-skill anti-center-bias rule) */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full pt-24 pb-20">
+        <motion.div
+          className="max-w-2xl"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {/* Eyebrow label */}
+          <motion.p
+            variants={itemVariants}
+            className="text-xs font-semibold tracking-[0.2em] uppercase text-zinc-400 mb-6"
+          >
+            Sonthofen im Allgäu
+          </motion.p>
+
+          {/* Main headline */}
+          <motion.h1
+            variants={itemVariants}
+            className="font-black tracking-tighter leading-none text-white mb-8"
+            style={{ fontSize: 'clamp(3rem, 8vw, 7rem)' }}
+          >
+            ANHÄNGER
+            <br />
+            <span className="text-zinc-300">VERMIETUNG</span>
+          </motion.h1>
+
+          {/* Subline */}
+          <motion.p
+            variants={itemVariants}
+            className="text-lg text-zinc-400 leading-relaxed mb-10 max-w-[52ch]"
+          >
+            Premium-Anhänger für jeden Anlass — vom kleinen Fiat 500 bis zum
+            großen RS6. Flexible Vermietung mit persönlicher Beratung.
+          </motion.p>
+
+          {/* CTAs */}
+          <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
+            <button
+              onClick={scrollToContact}
+              className="text-sm font-semibold text-zinc-950 bg-white px-7 py-3.5 rounded hover:bg-zinc-200 active:scale-[0.98] transition-all duration-200"
+            >
+              Anfrage stellen
+            </button>
+            <button
+              onClick={scrollDown}
+              className="text-sm font-semibold text-white border border-white/20 px-7 py-3.5 rounded hover:border-white/40 hover:bg-white/5 active:scale-[0.98] transition-all duration-200"
+            >
+              Mehr erfahren
+            </button>
+          </motion.div>
+
+          {/* Scroll indicator */}
+          <motion.div
+            variants={itemVariants}
+            className="mt-16 flex items-center gap-3 text-zinc-500 cursor-pointer hover:text-zinc-300 transition-colors"
+            onClick={scrollDown}
+          >
+            <motion.div
+              animate={{ y: [0, 6, 0] }}
+              transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
+            >
+              <ArrowDown size={16} weight="bold" />
+            </motion.div>
+            <span className="text-xs tracking-widest uppercase font-medium">Scroll</span>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* Right-side subtle stat */}
+      <motion.div
+        className="absolute right-8 lg:right-12 bottom-20 hidden lg:flex flex-col items-end gap-1 z-10"
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.2, duration: 0.7, ease: "easeOut" }}
+      >
+        <span className="text-4xl font-black text-white tracking-tighter">2022</span>
+        <span className="text-xs text-zinc-500 tracking-widest uppercase">Gegründet</span>
+      </motion.div>
+    </section>
+  );
+}

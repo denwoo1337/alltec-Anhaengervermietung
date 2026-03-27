@@ -1,0 +1,233 @@
+<style>
+  body { background: #0e0e0e; color: #e5e5e5; font-family: system-ui, sans-serif; }
+  h2 { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 0.25rem; color: #fff; }
+  .subtitle { color: #71717a; font-size: 0.85rem; margin-bottom: 2rem; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+  .card {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid rgba(255,255,255,0.07);
+    background: #1c1c1c;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s;
+    position: relative;
+  }
+  .card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-2px); }
+  .card.selected { border-color: #a3e635 !important; }
+  .card.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 10px; right: 10px;
+    background: #a3e635;
+    color: #000;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 900;
+    display: grid; place-items: center;
+  }
+
+  .card-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #a3e635;
+    padding: 14px 16px 0;
+  }
+  .card-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #fff;
+    padding: 4px 16px 12px;
+  }
+
+  /* Mini mockup inside card */
+  .demo {
+    margin: 0 12px 12px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .mini-card {
+    background: #111;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0;
+  }
+  .mini-img {
+    width: 100%;
+    height: 90px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+  }
+  .mini-body { padding: 10px 12px; }
+  .mini-name { font-size: 0.8rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .mini-price { font-size: 0.75rem; color: #71717a; }
+
+  /* Option A: Inline expand */
+  .mini-expanded {
+    background: #161616;
+    padding: 10px 12px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  .mini-spec-row { display: flex; justify-content: space-between; padding: 3px 0; font-size: 0.68rem; }
+  .mini-spec-label { color: #52525b; text-transform: uppercase; letter-spacing: 0.08em; }
+  .mini-spec-value { color: #a1a1aa; font-weight: 600; }
+  .mini-tag { display: inline-block; font-size: 0.62rem; padding: 2px 7px; border-radius: 99px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: #71717a; margin: 4px 2px 0; }
+  .mini-cta { margin-top: 8px; width: 100%; padding: 6px; background: #fff; color: #000; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-align: center; }
+  .mini-arrow { color: #a3e635; font-size: 0.68rem; font-weight: 700; text-align: right; padding: 4px 12px 8px; }
+
+  /* Option B: Modal */
+  .modal-backdrop {
+    background: rgba(0,0,0,0.7);
+    border-radius: 8px;
+    padding: 8px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 220px;
+    position: relative;
+  }
+  .modal-box {
+    background: #1c1c1c;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+    width: 100%;
+    overflow: hidden;
+  }
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px 0;
+  }
+  .modal-close { color: #52525b; font-size: 1rem; }
+
+  /* Option C: Flip */
+  .flip-container {
+    perspective: 600px;
+    height: 220px;
+    margin: 12px;
+  }
+  .flip-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
+    transform: rotateY(25deg);
+  }
+  .flip-front, .flip-back {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .flip-front { background: #111; }
+  .flip-back {
+    background: #181818;
+    transform: rotateY(180deg);
+    padding: 12px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .flip-hint { font-size: 0.62rem; color: #52525b; text-align: center; padding: 6px 0 10px; }
+
+  .card-desc {
+    font-size: 0.75rem;
+    color: #71717a;
+    padding: 0 16px 14px;
+    line-height: 1.5;
+  }
+</style>
+
+<h2>Wie soll die Kachel sich öffnen?</h2>
+<p class="subtitle">Wähle den Interaktionsstil der dir am besten gefällt. Klicken zum Auswählen.</p>
+
+<div class="cards">
+
+  <!-- OPTION A: Inline Expand -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-label">Option A</div>
+    <div class="card-title">Inline aufklappen</div>
+    <div class="demo">
+      <div class="mini-card">
+        <div class="mini-img">🚛</div>
+        <div class="mini-body">
+          <div class="mini-name">Auto-Transportanhänger</div>
+          <div class="mini-price">65 € / Tag &nbsp;·&nbsp; <span style="color:#a3e635;font-size:0.65rem">▲ Details</span></div>
+        </div>
+        <div class="mini-expanded">
+          <div class="mini-spec-row"><span class="mini-spec-label">Nutzlast</span><span class="mini-spec-value">2.460 kg</span></div>
+          <div class="mini-spec-row"><span class="mini-spec-label">Ladebreite</span><span class="mini-spec-value">2,10 m</span></div>
+          <div class="mini-spec-row"><span class="mini-spec-label">Ladelänge</span><span class="mini-spec-value">4,80 m</span></div>
+          <div style="margin-top:6px">
+            <span class="mini-tag">Kippbar</span>
+            <span class="mini-tag">80 km/h</span>
+            <span class="mini-tag">Seilwinde</span>
+          </div>
+          <div class="mini-cta">Jetzt anfragen</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-desc">Kachel wächst nach unten auf. Alle anderen Kacheln bleiben sichtbar. Grid passt sich an.</div>
+  </div>
+
+  <!-- OPTION B: Modal Overlay -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-label">Option B</div>
+    <div class="card-title">Modal / Overlay</div>
+    <div class="demo">
+      <div class="modal-backdrop">
+        <div class="modal-box">
+          <div class="modal-header">
+            <span style="font-size:0.8rem;font-weight:700;color:#fff">Auto-Transportanhänger</span>
+            <span class="modal-close">✕</span>
+          </div>
+          <div style="padding: 8px 14px 12px">
+            <div class="mini-spec-row"><span class="mini-spec-label">Nutzlast</span><span class="mini-spec-value">2.460 kg</span></div>
+            <div class="mini-spec-row"><span class="mini-spec-label">Ladebreite</span><span class="mini-spec-value">2,10 m</span></div>
+            <div style="margin-top:6px">
+              <span class="mini-tag">Kippbar</span>
+              <span class="mini-tag">80 km/h</span>
+            </div>
+            <div class="mini-cta" style="margin-top:10px">Jetzt anfragen</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-desc">Klick öffnet ein zentriertes Overlay mit dunklem Hintergrund. Fokus liegt auf den Details.</div>
+  </div>
+
+  <!-- OPTION C: Flip Card -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-label">Option C</div>
+    <div class="card-title">Karte dreht sich um</div>
+    <div class="flip-container">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="mini-img">🚛</div>
+          <div class="mini-body">
+            <div class="mini-name">Auto-Transportanhänger</div>
+            <div class="mini-price">65 € / Tag</div>
+          </div>
+        </div>
+        <div class="flip-back">
+          <div class="mini-name" style="margin-bottom:8px">Details</div>
+          <div class="mini-spec-row"><span class="mini-spec-label">Nutzlast</span><span class="mini-spec-value">2.460 kg</span></div>
+          <div class="mini-spec-row"><span class="mini-spec-label">Ladebreite</span><span class="mini-spec-value">2,10 m</span></div>
+          <div style="margin-top:6px">
+            <span class="mini-tag">Kippbar</span>
+            <span class="mini-tag">80 km/h</span>
+          </div>
+          <div class="mini-cta" style="margin-top:10px">Jetzt anfragen</div>
+        </div>
+      </div>
+    </div>
+    <div class="flip-hint">↩ Vorschau: Karte halb gedreht</div>
+    <div class="card-desc">Karte dreht sich per Animation um. Vorderseite zeigt Bild, Rückseite zeigt alle Details.</div>
+  </div>
+
+</div>

@@ -1,0 +1,246 @@
+<style>
+  * { box-sizing: border-box; }
+  body { background: #0e0e0e; color: #e5e5e5; font-family: system-ui, sans-serif; }
+  h2 { font-size: 1.3rem; font-weight: 900; letter-spacing: -0.03em; color: #fff; margin-bottom: 0.2rem; }
+  .subtitle { color: #71717a; font-size: 0.82rem; margin-bottom: 1.8rem; }
+
+  /* align-items: start — jede Kachel nur so hoch wie ihr eigener Inhalt */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    align-items: start;
+  }
+
+  .card {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: #1c1c1c;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .card:hover { border-color: rgba(255,255,255,0.15); }
+  .card.open { border-color: rgba(255,255,255,0.14); }
+
+  .card-img { position: relative; width: 100%; overflow: hidden; }
+  .card-img-inner {
+    width: 100%; height: 160px;
+    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem;
+    transition: transform 0.5s ease;
+  }
+  .card:not(.open):hover .card-img-inner { transform: scale(1.04); }
+  .card-img-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(28,28,28,1) 0%, rgba(28,28,28,0.2) 50%, transparent 80%);
+  }
+  .badge {
+    position: absolute; top: 10px;
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 4px; backdrop-filter: blur(6px);
+  }
+  .badge-l { left: 10px; background: rgba(17,17,17,0.85); border: 1px solid rgba(255,255,255,0.12); color: #a3e635; }
+  .badge-r { right: 10px; background: rgba(17,17,17,0.85); border: 1px solid rgba(255,255,255,0.10); color: #e5e5e5; }
+
+  .card-head {
+    padding: 12px 14px;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
+  .card-model { font-size: 0.62rem; color: #3f3f46; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 2px; }
+  .card-name { font-size: 0.9rem; font-weight: 800; color: #fff; margin-bottom: 3px; }
+  .card-keyspec { font-size: 0.7rem; color: #71717a; }
+  .card-keyspec b { color: #a1a1aa; font-weight: 600; }
+  .card-right { text-align: right; flex-shrink: 0; }
+  .price-big { font-size: 1.05rem; font-weight: 900; color: #fff; }
+  .price-sub { font-size: 0.62rem; color: #52525b; }
+  .toggle {
+    display: flex; align-items: center; gap: 3px; justify-content: flex-end;
+    font-size: 0.63rem; font-weight: 600; color: #52525b;
+    margin-top: 3px; transition: color 0.2s;
+  }
+  .arrow { display: inline-block; transition: transform 0.35s ease; }
+  .card.open .toggle { color: #a3e635; }
+  .card.open .arrow { transform: rotate(180deg); }
+
+  .card-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.45s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+  .card.open .card-body { max-height: 600px; opacity: 1; }
+  .card-body-inner {
+    padding: 12px 14px 14px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .sec { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #52525b; margin-bottom: 6px; }
+  .specs { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 10px; }
+  .spec { padding: 7px 9px; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); }
+  .spec-l { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.1em; color: #52525b; margin-bottom: 2px; }
+  .spec-v { font-size: 0.78rem; font-weight: 700; color: #fff; }
+  .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+  .tag { font-size: 0.63rem; color: #71717a; padding: 2px 7px; border-radius: 99px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.07); }
+  hr { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 0 0 10px; }
+  .pricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 10px; }
+  .pi { padding: 7px 9px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); text-align: center; }
+  .pi-l { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.08em; color: #52525b; margin-bottom: 2px; }
+  .pi-v { font-size: 0.9rem; font-weight: 900; color: #fff; }
+  .cta { width: 100%; padding: 9px; border-radius: 7px; background: #fff; color: #0e0e0e; font-size: 0.75rem; font-weight: 700; text-align: center; }
+</style>
+
+<h2>Gleichwertige Kacheln</h2>
+<p class="subtitle">Kollabiert alle gleich groß. Aufgeklappt wächst jede Kachel eigenständig — die anderen bleiben unberührt.</p>
+
+<div class="grid">
+
+  <!-- AUTO -->
+  <div class="card open">
+    <div class="card-img">
+      <div class="card-img-inner">🚛</div>
+      <div class="card-img-overlay"></div>
+      <span class="badge badge-l">Verfügbar</span>
+      <span class="badge badge-r">3.000 kg</span>
+    </div>
+    <div class="card-head">
+      <div>
+        <div class="card-model">Z-Trailer AT30-21/48</div>
+        <div class="card-name">Auto-Transportanhänger</div>
+        <div class="card-keyspec">Nutzlast <b>2.460 kg</b> · Länge <b>4,80 m</b></div>
+      </div>
+      <div class="card-right">
+        <div class="price-big">65 €</div>
+        <div class="price-sub">/ Tag</div>
+        <div class="toggle">Schließen <span class="arrow">▾</span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="sec">Technische Daten</div>
+        <div class="specs">
+          <div class="spec"><div class="spec-l">Zulassung</div><div class="spec-v">3.000 kg</div></div>
+          <div class="spec"><div class="spec-l">Nutzlast</div><div class="spec-v">ca. 2.460 kg</div></div>
+          <div class="spec"><div class="spec-l">Eigengewicht</div><div class="spec-v">ca. 540 kg</div></div>
+          <div class="spec"><div class="spec-l">Ladebreite</div><div class="spec-v">2,10 m</div></div>
+          <div class="spec"><div class="spec-l">Ladelänge</div><div class="spec-v">4,80 m</div></div>
+        </div>
+        <div class="sec">Ausstattung</div>
+        <div class="tags">
+          <span class="tag">Kippbar</span><span class="tag">80 km/h</span><span class="tag">Seilwinde optional</span><span class="tag">Rampen ausziehbar</span>
+        </div>
+        <hr>
+        <div class="sec">Preise</div>
+        <div class="pricing">
+          <div class="pi"><div class="pi-l">Tag</div><div class="pi-v">65 €</div></div>
+          <div class="pi"><div class="pi-l">Weiterer Tag</div><div class="pi-v">50 €</div></div>
+          <div class="pi"><div class="pi-l">Wochenende</div><div class="pi-v">150 €</div></div>
+        </div>
+        <div class="cta">Jetzt anfragen →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLANE -->
+  <div class="card">
+    <div class="card-img">
+      <div class="card-img-inner">🏕️</div>
+      <div class="card-img-overlay"></div>
+      <span class="badge badge-l">Verfügbar</span>
+      <span class="badge badge-r">750 kg</span>
+    </div>
+    <div class="card-head">
+      <div>
+        <div class="card-model">Humbaur HA752513</div>
+        <div class="card-name">Planenanhänger</div>
+        <div class="card-keyspec">Nutzlast <b>520 kg</b> · Klasse B genügt</div>
+      </div>
+      <div class="card-right">
+        <div class="price-big">30 €</div>
+        <div class="price-sub">/ Tag</div>
+        <div class="toggle">Details <span class="arrow">▾</span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="sec">Technische Daten</div>
+        <div class="specs">
+          <div class="spec"><div class="spec-l">Zulassung</div><div class="spec-v">750 kg unbremst</div></div>
+          <div class="spec"><div class="spec-l">Nutzlast</div><div class="spec-v">ca. 520 kg</div></div>
+          <div class="spec"><div class="spec-l">Innenlänge</div><div class="spec-v">251 cm</div></div>
+          <div class="spec"><div class="spec-l">Innenbreite</div><div class="spec-v">131 cm</div></div>
+          <div class="spec"><div class="spec-l">Innenhöhe</div><div class="spec-v">180 cm</div></div>
+        </div>
+        <div class="sec">Ausstattung</div>
+        <div class="tags">
+          <span class="tag">Klasse B genügt</span><span class="tag">750 kg ungebremst</span><span class="tag">Hochplane</span>
+        </div>
+        <hr>
+        <div class="sec">Preise</div>
+        <div class="pricing">
+          <div class="pi"><div class="pi-l">Tag</div><div class="pi-v">30 €</div></div>
+          <div class="pi"><div class="pi-l">Weiterer Tag</div><div class="pi-v">20 €</div></div>
+          <div class="pi"><div class="pi-l">Wochenende</div><div class="pi-v">70 €</div></div>
+        </div>
+        <div class="cta">Jetzt anfragen →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOTORRAD -->
+  <div class="card">
+    <div class="card-img">
+      <div class="card-img-inner">🏍️</div>
+      <div class="card-img-overlay"></div>
+      <span class="badge badge-l">Verfügbar</span>
+      <span class="badge badge-r">750 kg</span>
+    </div>
+    <div class="card-head">
+      <div>
+        <div class="card-model">Humbaur HM752113</div>
+        <div class="card-name">Motorradanhänger</div>
+        <div class="card-keyspec">Nutzlast <b>500 kg</b> · <b>3</b> Stellplätze</div>
+      </div>
+      <div class="card-right">
+        <div class="price-big">30 €</div>
+        <div class="price-sub">/ Tag</div>
+        <div class="toggle">Details <span class="arrow">▾</span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="sec">Technische Daten</div>
+        <div class="specs">
+          <div class="spec"><div class="spec-l">Zulassung</div><div class="spec-v">750 kg unbremst</div></div>
+          <div class="spec"><div class="spec-l">Nutzlast</div><div class="spec-v">500 kg</div></div>
+          <div class="spec"><div class="spec-l">Innenlänge</div><div class="spec-v">209 cm</div></div>
+          <div class="spec"><div class="spec-l">Innenbreite</div><div class="spec-v">136 cm</div></div>
+          <div class="spec"><div class="spec-l">Stellplätze</div><div class="spec-v">3</div></div>
+        </div>
+        <div class="sec">Ausstattung</div>
+        <div class="tags">
+          <span class="tag">3 Stellplätze</span><span class="tag">Rampe montiert</span><span class="tag">Zurrpunkte</span><span class="tag">750 kg ungebremst</span>
+        </div>
+        <hr>
+        <div class="sec">Preise</div>
+        <div class="pricing">
+          <div class="pi"><div class="pi-l">Tag</div><div class="pi-v">30 €</div></div>
+          <div class="pi"><div class="pi-l">Weiterer Tag</div><div class="pi-v">20 €</div></div>
+          <div class="pi"><div class="pi-l">Wochenende</div><div class="pi-v">70 €</div></div>
+        </div>
+        <div class="cta">Jetzt anfragen →</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => {
+      const wasOpen = card.classList.contains('open');
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('open'));
+      if (!wasOpen) card.classList.add('open');
+    });
+  });
+</script>
