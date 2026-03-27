@@ -1,5 +1,5 @@
 import { motion, type Variants } from 'framer-motion';
-import { ArrowDown } from '@phosphor-icons/react';
+import { ArrowDown, Star, ArrowUpRight } from '@phosphor-icons/react';
 import fordMitAnhaenger from '../../brand_assets/Ford_mit_Anhänger.jpg';
 
 const containerVariants: Variants = {
@@ -91,6 +91,25 @@ export default function Hero() {
               Mehr erfahren
             </button>
           </motion.div>
+
+          {/* Google rating badge */}
+          <motion.a
+            variants={itemVariants}
+            href="https://share.google/terGN8aPecS9CBDz6"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 bg-white/[0.06] border border-white/[0.08] rounded-full px-4 py-2 hover:bg-white/10 hover:border-white/[0.15] transition-all duration-200"
+          >
+            <span className="flex items-center gap-0.5">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={12} weight="fill" className="text-amber-400" />
+              ))}
+            </span>
+            <span className="text-sm font-semibold text-white">4,8</span>
+            <span className="text-zinc-600">·</span>
+            <span className="text-xs text-zinc-400">44 Rezensionen auf Google</span>
+            <ArrowUpRight size={12} className="text-zinc-500" />
+          </motion.a>
 
           {/* Scroll indicator */}
           <motion.div
