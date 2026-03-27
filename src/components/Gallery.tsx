@@ -178,7 +178,7 @@ function GalleryImage({
         src={src}
         alt={`Galerie Bild ${index + 1}`}
         className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-        loading={index < 6 ? 'eager' : 'lazy'}
+        loading="lazy"
         width={800}
         height={552}
       />

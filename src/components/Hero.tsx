@@ -10,9 +10,8 @@ const containerVariants: Variants = {
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { y: 20 },
   visible: {
-    opacity: 1,
     y: 0,
     transition: { duration: 0.6, ease: "easeOut" },
   },
@@ -143,7 +142,7 @@ export default function Hero() {
           alt=""
           className="w-full h-full object-cover"
           style={{ transform: 'scaleX(-1)', objectPosition: '65% center' }}
-          {...({ fetchpriority: 'high' } as React.ImgHTMLAttributes<HTMLImageElement>)}
+          loading="lazy"
           width={2500}
           height={1667}
         />
