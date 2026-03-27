@@ -112,137 +112,44 @@ function scrollToContact() {
   document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
 }
 
-function LargeCard({ trailer, inView }: { trailer: Trailer; inView: boolean }) {
+function TrailerCard({
+  trailer,
+  delay,
+  inView,
+}: {
+  trailer: Trailer;
+  delay: number;
+  inView: boolean;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <motion.div
-      className="col-span-2 rounded-2xl overflow-hidden group"
-      style={{ border: '1px solid rgba(255,255,255,0.08)', background: '#1c1c1c' }}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-      transition={{ delay: 0, duration: 0.6, ease: 'easeOut' }}
-      whileHover={{ scale: 1.005 }}
-    >
-      {/* Image */}
-      <div className="relative h-72 lg:h-80 overflow-hidden">
-        <img
-          src={trailer.img}
-          alt={trailer.name}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          style={{ objectPosition: trailer.imgPosition }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(to top, rgba(28,28,28,1) 0%, rgba(28,28,28,0.3) 50%, transparent 80%)',
-          }}
-        />
-        {/* Tag */}
-        <span
-          className="absolute top-4 left-4 text-[10px] font-semibold tracking-[0.15em] uppercase px-2.5 py-1 rounded"
-          style={{
-            background: 'rgba(17,17,17,0.85)',
-            border: '1px solid rgba(255,255,255,0.12)',
-            backdropFilter: 'blur(6px)',
-            color: '#a3e635',
-          }}
-        >
-          {trailer.tag}
-        </span>
-        {/* Zulassung badge */}
-        <span
-          className="absolute top-4 right-4 text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded"
-          style={{
-            background: 'rgba(17,17,17,0.85)',
-            border: '1px solid rgba(255,255,255,0.10)',
-            backdropFilter: 'blur(6px)',
-            color: '#e5e5e5',
-          }}
-        >
-          3.000 kg
-        </span>
-      </div>
-
-      {/* Content */}
-      <div className="p-6 lg:p-7">
-        <p className="text-[10px] text-zinc-600 uppercase tracking-widest mb-1">{trailer.model}</p>
-        <h3 className="text-lg font-black tracking-tight text-white mb-2">{trailer.name}</h3>
-        <p className="text-sm text-zinc-400 leading-relaxed mb-5 max-w-[55ch]">{trailer.description}</p>
-
-        {/* Specs */}
-        <div className="grid grid-cols-3 gap-3 mb-5">
-          {trailer.specs.map(({ label, value }) => (
-            <div
-              key={label}
-              className="px-3 py-3 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}
-            >
-              <p className="text-[10px] text-zinc-500 uppercase tracking-wider mb-1">{label}</p>
-              <p className="text-sm font-bold text-white">{value}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Highlights */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {trailer.highlights.map((h) => (
-            <span
-              key={h}
-              className="text-[11px] text-zinc-400 px-2.5 py-1 rounded-full"
-              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}
-            >
-              {h}
-            </span>
-          ))}
-        </div>
-
-        {/* Pricing + CTA */}
-        <div
-          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-5"
-          style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
-        >
-          <div className="flex flex-wrap gap-x-5 gap-y-1">
-            {trailer.pricing.map(({ label, price }) => (
-              <div key={label} className="flex items-baseline gap-1">
-                <span className="text-base font-black text-white">{price}</span>
-                <span className="text-[11px] text-zinc-500">/ {label}</span>
-              </div>
-            ))}
-          </div>
-          <button
-            onClick={scrollToContact}
-            className="shrink-0 flex items-center gap-2 text-xs font-semibold text-zinc-950 bg-white px-5 py-2.5 rounded-lg hover:bg-zinc-200 active:scale-[0.98] transition-all duration-200 group/btn"
-          >
-            Jetzt anfragen
-            <ArrowRight size={13} weight="bold" className="transition-transform group-hover/btn:translate-x-0.5" />
-          </button>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-function SmallCard({ trailer, delay, inView }: { trailer: Trailer; delay: number; inView: boolean }) {
-  return (
-    <motion.div
-      className="rounded-2xl overflow-hidden group flex flex-col"
+      className="rounded-2xl overflow-hidden cursor-pointer"
       style={{ border: '1px solid rgba(255,255,255,0.08)', background: '#1c1c1c' }}
       initial={{ opacity: 0, y: 24 }}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
       transition={{ delay, duration: 0.6, ease: 'easeOut' }}
-      whileHover={{ scale: 1.01 }}
+      onClick={() => setIsOpen((prev) => !prev)}
     >
       {/* Image */}
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-40 overflow-hidden">
         <img
           src={trailer.img}
           alt={trailer.name}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          style={{ objectPosition: trailer.imgPosition }}
+          className="w-full h-full object-cover transition-transform duration-700"
+          style={{
+            objectPosition: trailer.imgPosition,
+            transform: isOpen ? 'scale(1)' : undefined,
+          }}
         />
         <div
           className="absolute inset-0"
-          style={{ background: 'linear-gradient(to top, rgba(28,28,28,0.95) 0%, transparent 60%)' }}
+          style={{
+            background: 'linear-gradient(to top, rgba(28,28,28,1) 0%, rgba(28,28,28,0.2) 50%, transparent 80%)',
+          }}
         />
+        {/* Badges */}
         <span
           className="absolute top-3 left-3 text-[10px] font-semibold tracking-[0.15em] uppercase px-2.5 py-1 rounded"
           style={{
@@ -254,55 +161,128 @@ function SmallCard({ trailer, delay, inView }: { trailer: Trailer; delay: number
         >
           {trailer.tag}
         </span>
-      </div>
-
-      {/* Content */}
-      <div className="p-5 flex flex-col flex-1">
-        <p className="text-[10px] text-zinc-600 uppercase tracking-widest mb-1">{trailer.model}</p>
-        <h3 className="font-bold text-white tracking-tight mb-1.5">{trailer.name}</h3>
-        <p className="text-xs text-zinc-500 leading-relaxed mb-4">{trailer.description}</p>
-
-        {/* Specs */}
-        <div className="space-y-2 mb-4">
-          {trailer.specs.map(({ label, value }) => (
-            <div key={label} className="flex justify-between items-center">
-              <span className="text-[11px] text-zinc-500 uppercase tracking-wider">{label}</span>
-              <span className="text-xs font-semibold text-zinc-200">{value}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Highlights */}
-        <div className="flex flex-wrap gap-1.5 mb-4">
-          {trailer.highlights.map((h) => (
-            <span
-              key={h}
-              className="text-[11px] text-zinc-400 px-2 py-0.5 rounded-full"
-              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}
-            >
-              {h}
-            </span>
-          ))}
-        </div>
-
-        {/* Pricing + CTA */}
-        <div
-          className="flex items-center justify-between gap-3 pt-4 mt-auto"
-          style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
+        <span
+          className="absolute top-3 right-3 text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded"
+          style={{
+            background: 'rgba(17,17,17,0.85)',
+            border: '1px solid rgba(255,255,255,0.10)',
+            backdropFilter: 'blur(6px)',
+            color: '#e5e5e5',
+          }}
         >
-          <div className="flex items-baseline gap-1">
-            <span className="text-base font-black text-white">{trailer.pricing[0].price}</span>
-            <span className="text-[11px] text-zinc-500">/ Tag</span>
-          </div>
-          <button
-            onClick={scrollToContact}
-            className="flex items-center gap-1.5 text-xs font-semibold text-zinc-300 hover:text-white transition-colors group/btn"
+          {trailer.zulassung}
+        </span>
+      </div>
+
+      {/* Collapsed header — always visible */}
+      <div className="flex items-center justify-between gap-3 px-4 py-3">
+        <div className="min-w-0">
+          <p className="text-[10px] text-zinc-600 uppercase tracking-widest mb-0.5">{trailer.model}</p>
+          <h3 className="text-sm font-bold text-white tracking-tight mb-1">{trailer.name}</h3>
+          <p className="text-xs text-zinc-500">{trailer.keySpec}</p>
+        </div>
+        <div className="text-right shrink-0">
+          <p className="text-base font-black text-white leading-none">{trailer.pricing[0].price}</p>
+          <p className="text-[10px] text-zinc-600 mb-1">/ Tag</p>
+          <div
+            className="flex items-center justify-end gap-1 text-[11px] font-semibold transition-colors duration-200"
+            style={{ color: isOpen ? '#a3e635' : '#52525b' }}
           >
-            Anfragen
-            <ArrowRight size={12} weight="bold" className="transition-transform group-hover/btn:translate-x-0.5" />
-          </button>
+            <span>{isOpen ? 'Schließen' : 'Details'}</span>
+            <CaretDown
+              size={11}
+              weight="bold"
+              style={{
+                transition: 'transform 0.35s ease',
+                transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+              }}
+            />
+          </div>
         </div>
       </div>
+
+      {/* Expandable detail panel */}
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            style={{ overflow: 'hidden' }}
+          >
+            <div
+              className="px-4 pb-4 pt-3"
+              style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
+            >
+              {/* Technische Daten */}
+              <p className="text-[10px] font-semibold tracking-[0.15em] uppercase text-zinc-600 mb-2">
+                Technische Daten
+              </p>
+              <div className="grid grid-cols-2 gap-1.5 mb-3">
+                {trailer.specs.map(({ label, value }) => (
+                  <div
+                    key={label}
+                    className="px-2.5 py-2 rounded-lg"
+                    style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}
+                  >
+                    <p className="text-[9px] text-zinc-600 uppercase tracking-wider mb-0.5">{label}</p>
+                    <p className="text-xs font-bold text-white">{value}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Ausstattung */}
+              <p className="text-[10px] font-semibold tracking-[0.15em] uppercase text-zinc-600 mb-2">
+                Ausstattung
+              </p>
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                {trailer.highlights.map((h) => (
+                  <span
+                    key={h}
+                    className="text-[11px] text-zinc-400 px-2 py-0.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}
+                  >
+                    {h}
+                  </span>
+                ))}
+              </div>
+
+              {/* Divider */}
+              <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', marginBottom: '0.75rem' }} />
+
+              {/* Preise */}
+              <p className="text-[10px] font-semibold tracking-[0.15em] uppercase text-zinc-600 mb-2">
+                Preise
+              </p>
+              <div className="grid grid-cols-3 gap-1.5 mb-3">
+                {trailer.pricing.map(({ label, price }) => (
+                  <div
+                    key={label}
+                    className="px-2 py-2 rounded-lg text-center"
+                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}
+                  >
+                    <p className="text-[9px] text-zinc-600 uppercase tracking-wider mb-0.5">{label}</p>
+                    <p className="text-sm font-black text-white">{price}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  scrollToContact();
+                }}
+                className="w-full flex items-center justify-center gap-2 text-xs font-semibold text-zinc-950 bg-white px-4 py-2.5 rounded-lg hover:bg-zinc-200 active:scale-[0.98] transition-all duration-200 group/btn"
+              >
+                Jetzt anfragen
+                <ArrowRight size={12} weight="bold" className="transition-transform group-hover/btn:translate-x-0.5" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
