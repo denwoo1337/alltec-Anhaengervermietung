@@ -9,6 +9,7 @@ const navLinks = [
   { label: 'Home', href: '#hero' },
   { label: 'Über uns', href: '#about' },
   { label: 'Fuhrpark', href: '#fleet' },
+  { label: 'Galerie', href: '#gallery' },
   { label: 'Kontakt', href: '#contact' },
 ];
 

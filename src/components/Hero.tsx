@@ -94,11 +94,13 @@ export default function Hero() {
 
           {/* Google rating badge */}
           <motion.a
-            variants={itemVariants}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.9, duration: 0.7, ease: 'easeOut' }}
             href="https://share.google/terGN8aPecS9CBDz6"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 bg-white/[0.06] border border-white/[0.08] rounded-full px-4 py-2 hover:bg-white/10 hover:border-white/[0.15] transition-all duration-200"
+            className="mt-6 inline-flex items-center gap-2.5 bg-white/[0.06] border border-white/[0.08] rounded-full px-4 py-2 hover:bg-white/10 hover:border-white/[0.15] transition-all duration-200"
           >
             <span className="flex items-center gap-0.5">
               {[...Array(5)].map((_, i) => (
