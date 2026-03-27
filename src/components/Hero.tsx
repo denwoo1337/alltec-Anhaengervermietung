@@ -1,6 +1,6 @@
 import { motion, type Variants } from 'framer-motion';
 import { ArrowDown, Star, ArrowUpRight } from '@phosphor-icons/react';
-import fordMitAnhaenger from '../../brand_assets/Ford_mit_Anhänger.jpg';
+import fordMitAnhaenger from '../../brand_assets/Ford_mit_Anhänger.webp';
 
 const containerVariants: Variants = {
   hidden: {},
@@ -143,6 +143,9 @@ export default function Hero() {
           alt=""
           className="w-full h-full object-cover"
           style={{ transform: 'scaleX(-1)', objectPosition: '65% center' }}
+          {...({ fetchpriority: 'high' } as React.ImgHTMLAttributes<HTMLImageElement>)}
+          width={2500}
+          height={1667}
         />
       </motion.div>
 
