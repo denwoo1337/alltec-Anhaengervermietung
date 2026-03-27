@@ -133,7 +133,7 @@ function TrailerCard({
       onClick={() => setIsOpen((prev) => !prev)}
     >
       {/* Image */}
-      <div className="relative h-40 overflow-hidden">
+      <div className="relative h-56 overflow-hidden">
         <img
           src={trailer.img}
           alt={trailer.name}
