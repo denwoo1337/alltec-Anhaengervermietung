@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { motion, useInView, AnimatePresence, type Variants } from 'framer-motion';
+import { motion, useInView, type Variants } from 'framer-motion';
 import { CaretDown, ArrowRight } from '@phosphor-icons/react';
 import autoImg from '../../brand_assets/3000kg_Autoanhänger.jpg';
 import planenImg from '../../brand_assets/750kg_Planenanhänger.jpg';
@@ -138,10 +138,7 @@ function TrailerCard({
           src={trailer.img}
           alt={trailer.name}
           className="w-full h-full object-cover transition-transform duration-700"
-          style={{
-            objectPosition: trailer.imgPosition,
-            transform: isOpen ? 'scale(1)' : undefined,
-          }}
+          style={{ objectPosition: trailer.imgPosition }}
         />
         <div
           className="absolute inset-0"
@@ -202,87 +199,82 @@ function TrailerCard({
       </div>
 
       {/* Expandable detail panel */}
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-            style={{ overflow: 'hidden' }}
-          >
-            <div
-              className="px-4 pb-4 pt-3"
-              style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
-            >
-              {/* Technische Daten */}
-              <p className="text-[10px] font-semibold tracking-[0.15em] uppercase text-zinc-600 mb-2">
-                Technische Daten
-              </p>
-              <div className="grid grid-cols-2 gap-1.5 mb-3">
-                {trailer.specs.map(({ label, value }) => (
-                  <div
-                    key={label}
-                    className="px-2.5 py-2 rounded-lg"
-                    style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}
-                  >
-                    <p className="text-[9px] text-zinc-600 uppercase tracking-wider mb-0.5">{label}</p>
-                    <p className="text-xs font-bold text-white">{value}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Ausstattung */}
-              <p className="text-[10px] font-semibold tracking-[0.15em] uppercase text-zinc-600 mb-2">
-                Ausstattung
-              </p>
-              <div className="flex flex-wrap gap-1.5 mb-3">
-                {trailer.highlights.map((h) => (
-                  <span
-                    key={h}
-                    className="text-[11px] text-zinc-400 px-2 py-0.5 rounded-full"
-                    style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}
-                  >
-                    {h}
-                  </span>
-                ))}
-              </div>
-
-              {/* Divider */}
-              <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', marginBottom: '0.75rem' }} />
-
-              {/* Preise */}
-              <p className="text-[10px] font-semibold tracking-[0.15em] uppercase text-zinc-600 mb-2">
-                Preise
-              </p>
-              <div className="grid grid-cols-3 gap-1.5 mb-3">
-                {trailer.pricing.map(({ label, price }) => (
-                  <div
-                    key={label}
-                    className="px-2 py-2 rounded-lg text-center"
-                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}
-                  >
-                    <p className="text-[9px] text-zinc-600 uppercase tracking-wider mb-0.5">{label}</p>
-                    <p className="text-sm font-black text-white">{price}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* CTA */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  scrollToContact();
-                }}
-                className="w-full flex items-center justify-center gap-2 text-xs font-semibold text-zinc-950 bg-white px-4 py-2.5 rounded-lg hover:bg-zinc-200 active:scale-[0.98] transition-all duration-200 group/btn"
+      <motion.div
+        initial={false}
+        animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        style={{ overflow: 'hidden' }}
+      >
+        <div
+          className="px-4 pb-4 pt-3"
+          style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
+        >
+          {/* Technische Daten */}
+          <p className="text-[10px] font-semibold tracking-[0.15em] uppercase text-zinc-600 mb-2">
+            Technische Daten
+          </p>
+          <div className="grid grid-cols-2 gap-1.5 mb-3">
+            {trailer.specs.map(({ label, value }) => (
+              <div
+                key={label}
+                className="px-2.5 py-2 rounded-lg"
+                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}
               >
-                Jetzt anfragen
-                <ArrowRight size={12} weight="bold" className="transition-transform group-hover/btn:translate-x-0.5" />
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                <p className="text-[9px] text-zinc-600 uppercase tracking-wider mb-0.5">{label}</p>
+                <p className="text-xs font-bold text-white">{value}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Ausstattung */}
+          <p className="text-[10px] font-semibold tracking-[0.15em] uppercase text-zinc-600 mb-2">
+            Ausstattung
+          </p>
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {trailer.highlights.map((h) => (
+              <span
+                key={h}
+                className="text-[11px] text-zinc-400 px-2 py-0.5 rounded-full"
+                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}
+              >
+                {h}
+              </span>
+            ))}
+          </div>
+
+          {/* Divider */}
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', marginBottom: '0.75rem' }} />
+
+          {/* Preise */}
+          <p className="text-[10px] font-semibold tracking-[0.15em] uppercase text-zinc-600 mb-2">
+            Preise
+          </p>
+          <div className="grid grid-cols-3 gap-1.5 mb-3">
+            {trailer.pricing.map(({ label, price }) => (
+              <div
+                key={label}
+                className="px-2 py-2 rounded-lg text-center"
+                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}
+              >
+                <p className="text-[9px] text-zinc-600 uppercase tracking-wider mb-0.5">{label}</p>
+                <p className="text-sm font-black text-white">{price}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              scrollToContact();
+            }}
+            className="w-full flex items-center justify-center gap-2 text-xs font-semibold text-zinc-950 bg-white px-4 py-2.5 rounded-lg hover:bg-zinc-200 active:scale-[0.98] transition-all duration-200 group/btn"
+          >
+            Jetzt anfragen
+            <ArrowRight size={12} weight="bold" className="transition-transform group-hover/btn:translate-x-0.5" />
+          </button>
+        </div>
+      </motion.div>
     </motion.div>
   );
 }
@@ -290,8 +282,6 @@ function TrailerCard({
 export default function Fleet() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
-
-  const [large, ...small] = trailers;
 
   return (
     <section id="fleet" className="py-28 lg:py-40" style={{ background: '#0e0e0e' }}>
@@ -330,11 +320,15 @@ export default function Fleet() {
           </div>
         </motion.div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
-          <LargeCard trailer={large} inView={inView} />
-          {small.map((trailer, i) => (
-            <SmallCard key={trailer.id} trailer={trailer} delay={(i + 1) * 0.14} inView={inView} />
+        {/* Uniform Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5 items-start">
+          {trailers.map((trailer, i) => (
+            <TrailerCard
+              key={trailer.id}
+              trailer={trailer}
+              delay={i * 0.12}
+              inView={inView}
+            />
           ))}
         </div>
 
