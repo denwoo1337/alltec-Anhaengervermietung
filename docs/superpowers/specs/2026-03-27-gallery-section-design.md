@@ -16,21 +16,23 @@ A new standalone gallery section placed directly after the "Aktueller Fuhrpark" 
 
 ## Image Conversion & Preparation
 
-- Source: `Galerie/` folder in project root (33 images — 11 JPEG, ~22 HEIC)
-- Conversion: one-time Node script `scripts/convert-gallery.mjs` using the already-installed `heic-convert` package
-- Output: all images converted/copied to `public/galerie/` as `.jpg`
-- Filenames normalized: lowercase, spaces removed, no duplicates
+- Source: `Galerie/` folder in project root (33 images — 11 JPEG with double extensions like `.JPG.jpeg`, ~22 HEIC/heic)
+- Conversion: one-time Node script `scripts/convert-gallery.mjs` using the already-installed `heic-convert` package (v2.x async API, returns a Buffer written via `fs.writeFile`)
+- HEIC files: converted to JPEG via `heic-convert` and written to `public/galerie/`
+- Non-HEIC files (`.jpg`, `.jpeg` regardless of case): copied as-is without re-encoding
+- Output: all images land in `public/galerie/` as `.jpg`
+- Filename normalization rule: lowercase the full filename, replace spaces with underscores, preserve all other characters including parentheses (e.g. `IMG_4599 (1).HEIC` → `img_4599_(1).jpg`). This avoids collisions between `IMG_4599.HEIC` and `IMG_4599 (1).HEIC`.
 - The static image list is defined as an array in the Gallery component (paths like `/galerie/img_0912.jpg`)
 
 ## Grid & Expand
 
 - Layout: `grid-cols-1 md:grid-cols-3`, fixed image height `h-52` with `object-cover object-center`
 - Initially: 6 images visible (2 rows × 3 columns)
-- Remaining images: wrapped in a Framer Motion `animate={{ height }}` block — collapses to `height: 0` when closed
+- Remaining images: wrapped in a Framer Motion `animate={{ height }}` block — collapses to `height: 0` when closed; must include `style={{ overflow: 'hidden' }}` to clip content (same pattern as the expandable panel in `TrailerCard`, which is an inline function inside `Fleet.tsx`)
 - Expand button below grid:
   - Label: "Alle X Bilder anzeigen" (collapsed) / "Weniger anzeigen" (expanded)
   - Uses `CaretDown` icon from `@phosphor-icons/react`, rotates 180° when expanded
-  - Styled consistently with the Details toggle in `TrailerCard`
+  - Styled consistently with the Details toggle in `TrailerCard` (inline in `Fleet.tsx`)
 - Scroll behavior: no auto-scroll on expand (user stays in place)
 
 ## Lightbox
@@ -64,3 +66,5 @@ public/
 - `Gallery` imported and rendered in `src/App.tsx` between `<Fleet />` and `<Contact />`
 - No changes to existing components required
 - `useInView` from Framer Motion used for scroll-triggered entrance animation (same pattern as Fleet)
+- **Navbar:** No "Galerie" link added to the Navbar — deliberate omission to keep navigation minimal
+- **Accessibility:** Focus trapping inside the lightbox is out of scope for this iteration; ESC close and overlay-click close provide sufficient keyboard/pointer dismissal

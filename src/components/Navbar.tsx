@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { List, X } from '@phosphor-icons/react';
 import alltecLogo from '../assets/alltec-logo.jpeg';
@@ -11,9 +12,15 @@ const navLinks = [
   { label: 'Kontakt', href: '#contact' },
 ];
 
-export default function Navbar() {
+interface NavbarProps {
+  impressumPage?: boolean;
+}
+
+export default function Navbar({ impressumPage = false }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -24,8 +31,27 @@ export default function Navbar() {
 
   const handleNavClick = (href: string) => {
     setMenuOpen(false);
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    if (impressumPage || location.pathname !== '/') {
+      // Navigate to main page then scroll
+      navigate('/');
+      setTimeout(() => {
+        const el = document.querySelector(href);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      const el = document.querySelector(href);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (impressumPage || location.pathname !== '/') {
+      navigate('/');
+    } else {
+      const el = document.querySelector('#hero');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -44,8 +70,8 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12 h-16 flex items-center justify-between">
           {/* Logo */}
           <a
-            href="#hero"
-            onClick={(e) => { e.preventDefault(); handleNavClick('#hero'); }}
+            href="/"
+            onClick={handleLogoClick}
             className="select-none"
           >
             <img

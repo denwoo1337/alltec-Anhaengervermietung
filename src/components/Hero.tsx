@@ -1,5 +1,6 @@
 import { motion, type Variants } from 'framer-motion';
 import { ArrowDown } from '@phosphor-icons/react';
+import fordMitAnhaenger from '../../brand_assets/Ford_mit_Anhänger.jpg';
 
 const containerVariants: Variants = {
   hidden: {},
@@ -29,23 +30,8 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-[100dvh] flex items-center overflow-hidden"
+      className="relative min-h-[100dvh] flex items-center overflow-hidden bg-[#111111]"
     >
-      {/* Background image with dark gradient overlay */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('https://picsum.photos/seed/trailer-alltec/1920/1080')`,
-        }}
-      />
-      {/* Left-heavy dark overlay — asymmetric fade */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            'linear-gradient(to right, rgba(17,17,17,0.97) 0%, rgba(17,17,17,0.85) 45%, rgba(17,17,17,0.4) 75%, rgba(17,17,17,0.15) 100%)',
-        }}
-      />
       {/* Bottom fade */}
       <div
         className="absolute bottom-0 left-0 right-0 h-32"
@@ -121,6 +107,54 @@ export default function Hero() {
             <span className="text-xs tracking-widest uppercase font-medium">Scroll</span>
           </motion.div>
         </motion.div>
+      </div>
+
+      {/* Ford image — 62% container from right, zoomed composition */}
+      <motion.div
+        className="absolute right-0 top-0 bottom-0 hidden lg:block overflow-hidden"
+        style={{ width: '62%' }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 1.2, ease: 'easeOut' }}
+      >
+        <img
+          src={fordMitAnhaenger}
+          alt=""
+          className="w-full h-full object-cover"
+          style={{ transform: 'scaleX(-1)', objectPosition: '65% center' }}
+        />
+      </motion.div>
+
+      {/* Section-level fades — span full viewport, no container boundary visible */}
+      <div className="absolute inset-0 pointer-events-none hidden lg:block">
+        {/* Left fade — solid until container edge, smooth fade over it */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to right, #111111 0%, #111111 38%, rgba(17,17,17,0.7) 50%, rgba(17,17,17,0.1) 62%, transparent 74%)',
+          }}
+        />
+        {/* Top fade */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to bottom, #111111 0%, transparent 22%)',
+          }}
+        />
+        {/* Bottom fade */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to top, #111111 0%, transparent 28%)',
+          }}
+        />
+        {/* Right edge fade */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to left, #111111 0%, transparent 10%)',
+          }}
+        />
       </div>
 
       {/* Right-side subtle stat */}

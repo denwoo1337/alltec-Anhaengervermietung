@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { InstagramLogo, Phone } from '@phosphor-icons/react';
 
 export default function Footer() {
@@ -24,12 +25,12 @@ export default function Footer() {
           <p className="text-xs text-zinc-600 text-center">
             © {year} ALLTEC Anhängervermietung · Hochstatter Lukas · Sonthofen
             <span className="mx-2 text-zinc-700">·</span>
-            <a
-              href="#impressum"
+            <Link
+              to="/impressum"
               className="hover:text-zinc-400 transition-colors"
             >
               Impressum
-            </a>
+            </Link>
           </p>
 
           {/* Social icons */}
