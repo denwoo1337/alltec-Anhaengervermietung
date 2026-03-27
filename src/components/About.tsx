@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { motion, useInView, type Variants } from 'framer-motion';
 import { CheckCircle } from '@phosphor-icons/react';
-import autoAnhaenger from '../../brand_assets/Autoanhänger_mit_G-Klasse.jpg';
+import autoAnhaenger from '../../brand_assets/Autoanhänger_mit_G-Klasse.webp';
 
 const features = [
   'Aluminium-Anhänger von Z-Trailer',
@@ -114,6 +114,9 @@ export default function About() {
                 src={autoAnhaenger}
                 alt="ALLTEC Autoanhänger mit G-Klasse"
                 className="w-full h-full object-cover"
+                loading="lazy"
+                width={1920}
+                height={1280}
               />
               {/* Subtle dark vignette on image */}
               <div

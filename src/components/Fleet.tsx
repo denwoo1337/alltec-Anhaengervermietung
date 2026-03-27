@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react';
 import { motion, useInView, type Variants } from 'framer-motion';
 import { CaretDown, ArrowRight } from '@phosphor-icons/react';
-import autoImg from '../../brand_assets/3000kg_Autoanhänger.jpg';
-import planenImg from '../../brand_assets/750kg_Planenanhänger.jpg';
-import motorradImg from '../../brand_assets/750kg_Motorrad.jpg';
+import autoImg from '../../brand_assets/3000kg_Autoanhänger.webp';
+import planenImg from '../../brand_assets/750kg_Planenanhänger.webp';
+import motorradImg from '../../brand_assets/750kg_Motorrad.webp';
 
 type Spec = { label: string; value: string };
 type PriceEntry = { label: string; price: string };
@@ -139,6 +139,9 @@ function TrailerCard({
           alt={trailer.name}
           className="w-full h-full object-cover"
           style={{ objectPosition: trailer.imgPosition }}
+          loading="lazy"
+          width={800}
+          height={534}
         />
         <div
           className="absolute inset-0"
