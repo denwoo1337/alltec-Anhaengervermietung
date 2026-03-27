@@ -4,39 +4,39 @@ import { CaretDown } from '@phosphor-icons/react';
 import GalleryLightbox from './GalleryLightbox';
 
 const IMAGES: string[] = [
-  "/galerie/09ca22b3-06b9-46b0-949a-71dfb90169dd.jpg",
-  "/galerie/1ad3c858-7639-4002-8fbd-f0ca29010f58.jpg",
-  "/galerie/65c9594f-7b95-4f5c-9e15-3cb1e05670df.jpg",
-  "/galerie/8c156413-2e97-4177-8f89-c9aef96be2b3_(1).jpg",
-  "/galerie/90902ab7-2e22-431f-8b48-6c72480d8f1b_(1).jpg",
-  "/galerie/b21ed1c6-b854-4bd1-99f5-e45249aedf85.jpg",
-  "/galerie/ed693693-a4c8-4eb6-b676-2407a5cec608.jpg",
-  "/galerie/ford_mit_anhänger.jpg",
-  "/galerie/img_0912.jpg",
-  "/galerie/img_1371.jpg",
-  "/galerie/img_1807.jpg",
-  "/galerie/img_1837_(1).jpg",
-  "/galerie/img_2482.jpg",
-  "/galerie/img_2491_(1).jpg",
-  "/galerie/img_3012_(1).jpg",
-  "/galerie/img_3013.jpg",
-  "/galerie/img_4323_(1).jpg",
-  "/galerie/img_4599.jpg",
-  "/galerie/img_4599_(1).jpg",
-  "/galerie/img_4779.jpg",
-  "/galerie/img_5029_(1).jpg",
-  "/galerie/img_5175.jpg",
-  "/galerie/img_5679.jpg",
-  "/galerie/img_6076_(1).jpg",
-  "/galerie/img_6077.jpg",
-  "/galerie/img_6254.jpg",
-  "/galerie/img_6347.jpg",
-  "/galerie/img_7015.jpg",
-  "/galerie/img_8559.jpg",
-  "/galerie/img_8717_jpg.jpg",
-  "/galerie/img_8723.jpg",
-  "/galerie/img_9196.jpg",
-  "/galerie/img_9686_(1).jpg",
+  "/galerie/09ca22b3-06b9-46b0-949a-71dfb90169dd.webp",
+  "/galerie/1ad3c858-7639-4002-8fbd-f0ca29010f58.webp",
+  "/galerie/65c9594f-7b95-4f5c-9e15-3cb1e05670df.webp",
+  "/galerie/8c156413-2e97-4177-8f89-c9aef96be2b3_(1).webp",
+  "/galerie/90902ab7-2e22-431f-8b48-6c72480d8f1b_(1).webp",
+  "/galerie/b21ed1c6-b854-4bd1-99f5-e45249aedf85.webp",
+  "/galerie/ed693693-a4c8-4eb6-b676-2407a5cec608.webp",
+  "/galerie/ford_mit_anhänger.webp",
+  "/galerie/img_0912.webp",
+  "/galerie/img_1371.webp",
+  "/galerie/img_1807.webp",
+  "/galerie/img_1837_(1).webp",
+  "/galerie/img_2482.webp",
+  "/galerie/img_2491_(1).webp",
+  "/galerie/img_3012_(1).webp",
+  "/galerie/img_3013.webp",
+  "/galerie/img_4323_(1).webp",
+  "/galerie/img_4599.webp",
+  "/galerie/img_4599_(1).webp",
+  "/galerie/img_4779.webp",
+  "/galerie/img_5029_(1).webp",
+  "/galerie/img_5175.webp",
+  "/galerie/img_5679.webp",
+  "/galerie/img_6076_(1).webp",
+  "/galerie/img_6077.webp",
+  "/galerie/img_6254.webp",
+  "/galerie/img_6347.webp",
+  "/galerie/img_7015.webp",
+  "/galerie/img_8559.webp",
+  "/galerie/img_8717_jpg.webp",
+  "/galerie/img_8723.webp",
+  "/galerie/img_9196.webp",
+  "/galerie/img_9686_(1).webp",
 ];
 
 const INITIAL_COUNT = 6;
@@ -178,6 +178,9 @@ function GalleryImage({
         src={src}
         alt={`Galerie Bild ${index + 1}`}
         className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+        loading={index < 6 ? 'eager' : 'lazy'}
+        width={800}
+        height={552}
       />
       {/* Hover overlay */}
       <div
